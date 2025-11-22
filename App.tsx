@@ -5,7 +5,7 @@ import { specialties } from './data';
 import { 
   Search, Menu, X, ArrowLeft, FileText, ChevronRight, 
   Activity, Heart, Stethoscope, TestTube, Baby, Bug, Wind, Bone, Ear, 
-  Brain, Eye, Hammer, Droplet, Users, Siren
+  Brain, Eye, Hammer, Droplet, Users, Siren, Sparkles
 } from 'lucide-react';
 import { Prescription } from './types';
 
@@ -15,7 +15,6 @@ const iconMap: Record<string, any> = {
 };
 
 function App() {
-  // viewMode: 'dashboard' means Home Grid, 'specialty' means a specific category, 'alphabetical' means A-Z list
   const [viewMode, setViewMode] = useState<'dashboard' | 'specialty' | 'alphabetical'>('dashboard');
   const [selectedSpecialtyId, setSelectedSpecialtyId] = useState<string | null>(null);
   const [selectedPrescription, setSelectedPrescription] = useState<Prescription | null>(null);
@@ -62,9 +61,7 @@ function App() {
 
   // --- DATA PROCESSING ---
 
-  // Get the list of items to display in the "List View"
   const displayItems = useMemo(() => {
-    // 1. SEARCH MODE (Global)
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       let results: Array<{ prescription: Prescription, specialtyName: string }> = [];
@@ -83,7 +80,6 @@ function App() {
       return results;
     }
 
-    // 2. ALPHABETICAL MODE
     if (viewMode === 'alphabetical') {
       let all: Array<{ prescription: Prescription, specialtyName: string }> = [];
       specialties.forEach(s => {
@@ -94,7 +90,6 @@ function App() {
       return all.sort((a, b) => a.prescription.title.localeCompare(b.prescription.title));
     }
 
-    // 3. SPECIALTY MODE
     if (selectedSpecialtyId) {
       const specialty = specialties.find(s => s.id === selectedSpecialtyId);
       if (specialty) {
@@ -108,11 +103,13 @@ function App() {
     return [];
   }, [viewMode, selectedSpecialtyId, searchTerm]);
 
-  const currentSpecialtyName = useMemo(() => {
-    if (searchTerm) return `Résultats pour : "${searchTerm}"`;
-    if (viewMode === 'alphabetical') return "Index Alphabétique (A-Z)";
-    return specialties.find(s => s.id === selectedSpecialtyId)?.name || "Spécialité";
-  }, [viewMode, selectedSpecialtyId, searchTerm]);
+  const currentSpecialty = useMemo(() => specialties.find(s => s.id === selectedSpecialtyId), [selectedSpecialtyId]);
+
+  const currentViewTitle = useMemo(() => {
+    if (searchTerm) return `Résultats de recherche pour "${searchTerm}"`;
+    if (viewMode === 'alphabetical') return "Index Alphabétique Global";
+    return currentSpecialty?.name || "Spécialité";
+  }, [viewMode, currentSpecialty, searchTerm]);
 
 
   // --- RENDER ---
@@ -120,15 +117,15 @@ function App() {
   const isDashboard = viewMode === 'dashboard' && !searchTerm && !selectedPrescription;
 
   return (
-    <div className="flex h-screen bg-gray-100 font-sans overflow-hidden">
+    <div className="flex h-screen bg-medical-background font-sans overflow-hidden">
       
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 bg-black/50 z-30 md:hidden" onClick={() => setMobileMenuOpen(false)} />
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-30 md:hidden transition-opacity" onClick={() => setMobileMenuOpen(false)} />
       )}
 
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 transform ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:relative transition-transform duration-300 ease-in-out z-40 md:flex`}>
+      <div className={`fixed inset-y-0 left-0 transform ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:relative transition-transform duration-300 cubic-bezier(0.4, 0, 0.2, 1) z-40 md:flex shadow-2xl md:shadow-none`}>
         <Sidebar 
           selectedSpecialtyId={selectedSpecialtyId} 
           viewMode={viewMode}
@@ -143,39 +140,38 @@ function App() {
       <div className="flex-1 flex flex-col h-full w-full overflow-hidden relative">
         
         {/* Top Bar */}
-        <header className="bg-white border-b border-gray-200 shadow-sm p-4 flex items-center gap-4 print:hidden z-10 shrink-0">
+        <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-20 px-6 py-4 flex items-center gap-4 print:hidden">
           <button 
-            className="md:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
+            className="md:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-xl transition-colors"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Menu"
           >
-            {mobileMenuOpen ? <X /> : <Menu />}
+            <Menu />
           </button>
 
           {selectedPrescription ? (
              <button 
                onClick={handleBackToList}
-               className="flex items-center gap-2 text-medical-primary font-medium hover:underline mr-auto focus:outline-none"
+               className="group flex items-center gap-2 text-slate-500 hover:text-blue-600 font-medium transition-colors px-3 py-2 rounded-lg hover:bg-blue-50"
              >
-               <ArrowLeft className="w-4 h-4" />
-               Retour
+               <div className="bg-white border border-slate-200 rounded-full p-1 group-hover:border-blue-200 shadow-sm">
+                 <ArrowLeft className="w-4 h-4" />
+               </div>
+               <span>Retour à la liste</span>
              </button>
           ) : (
-            <div className="flex-1 max-w-2xl relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <div className="flex-1 max-w-2xl relative group">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
+              </div>
               <input 
                 type="text"
-                placeholder="Rechercher un médicament, une pathologie, une spécialité..."
-                className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-sm md:text-base"
+                placeholder="Rechercher un médicament, une pathologie..."
+                className="block w-full pl-10 pr-3 py-3 border-none rounded-xl bg-slate-100 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white transition-all shadow-inner focus:shadow-lg"
                 value={searchTerm}
                 onChange={(e) => {
                   setSearchTerm(e.target.value);
                   if (e.target.value && selectedPrescription) {
                     setSelectedPrescription(null);
-                  }
-                  if (e.target.value) {
-                      // If searching from dashboard, we technically enter a search mode
-                      // But viewMode state can remain as is, render logic handles it via `searchTerm` check
                   }
                 }}
               />
@@ -184,45 +180,82 @@ function App() {
         </header>
 
         {/* Content Area */}
-        <main className="flex-1 overflow-y-auto custom-scroll bg-[#f3f4f6] p-4 md:p-8">
-          <div className="max-w-6xl mx-auto h-full flex flex-col">
+        <main className="flex-1 overflow-y-auto custom-scroll p-4 md:p-8 relative">
+          {/* Decorative background blobs */}
+          <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-white to-transparent -z-10 pointer-events-none"></div>
+          
+          <div className="max-w-7xl mx-auto h-full flex flex-col">
 
             {/* VIEW: DASHBOARD (Grid of Specialties) */}
             {isDashboard ? (
-               <div className="animate-in fade-in duration-300 flex-1 flex flex-col">
-                  <div className="text-center mb-8 mt-4">
-                    {/* Credits moved to top */}
-                    <div className="mb-8 text-center border-b border-gray-200/50 pb-6">
-                       <p className="text-xs text-gray-500 font-medium uppercase tracking-widest mb-3">Élaboré par</p>
-                       <div className="flex flex-col md:flex-row justify-center items-center gap-2 md:gap-6 font-serif text-medical-primary text-lg font-bold">
-                         <span className="px-3 py-1 bg-blue-50 rounded-full">Dr ZEOUITINI YOUSSEF</span>
-                         <span className="hidden md:inline text-gray-300">•</span>
-                         <span>Noumairi Mohammed</span>
-                         <span className="hidden md:inline text-gray-300">•</span>
-                         <span>M. EL-AZRAK</span>
+               <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 flex-1 flex flex-col">
+                  
+                  {/* Hero / Credits Section */}
+                  <div className="mb-10 relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 to-slate-800 shadow-2xl text-white p-8 md:p-12">
+                     <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500 rounded-full mix-blend-overlay filter blur-3xl opacity-20 animate-pulse"></div>
+                     <div className="absolute bottom-0 left-0 w-48 h-48 bg-indigo-500 rounded-full mix-blend-overlay filter blur-3xl opacity-20"></div>
+                     
+                     <div className="relative z-10 text-center">
+                       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-blue-200 text-xs font-bold uppercase tracking-widest mb-6">
+                         <Sparkles className="w-3 h-3" />
+                         Comité Scientifique
                        </div>
-                    </div>
-
-                    <h2 className="text-3xl md:text-4xl font-serif font-bold text-medical-primary mb-2">Bienvenue sur Ordo Facile</h2>
-                    <p className="text-gray-500">Sélectionnez une spécialité ou utilisez la recherche ci-dessus.</p>
+                       
+                       <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 text-lg md:text-xl font-medium">
+                         <div className="flex items-center gap-3">
+                           <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-serif font-bold shadow-lg border-2 border-slate-700">Z</div>
+                           <span>Dr ZEOUITINI YOUSSEF</span>
+                         </div>
+                         <span className="hidden md:inline w-1.5 h-1.5 rounded-full bg-slate-600"></span>
+                         <div className="flex items-center gap-3">
+                           <div className="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center text-white font-serif font-bold shadow-lg border-2 border-slate-700">N</div>
+                           <span>Noumairi Mohammed</span>
+                         </div>
+                         <span className="hidden md:inline w-1.5 h-1.5 rounded-full bg-slate-600"></span>
+                         <div className="flex items-center gap-3">
+                           <div className="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center text-white font-serif font-bold shadow-lg border-2 border-slate-700">E</div>
+                           <span>M. EL-AZRAK</span>
+                         </div>
+                       </div>
+                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 mb-12">
-                    {specialties.map(specialty => {
+                  <div className="flex items-center justify-between mb-6 px-2">
+                    <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
+                      <Activity className="w-6 h-6 text-blue-600" />
+                      Spécialités Médicales
+                    </h2>
+                    <span className="text-sm text-slate-500">Sélectionnez une catégorie</span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
+                    {specialties.map((specialty, idx) => {
                        const Icon = iconMap[specialty.icon] || Activity;
                        return (
                          <button 
                            key={specialty.id}
                            onClick={() => handleSelectSpecialty(specialty.id)}
-                           className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-lg hover:border-blue-300 transition-all duration-200 flex flex-col items-center text-center gap-3 group"
+                           className="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl border border-slate-100 hover:border-blue-100 transition-all duration-300 hover:-translate-y-1 text-left overflow-hidden"
+                           style={{ animationDelay: `${idx * 50}ms` }}
                          >
-                           <div className="p-4 bg-blue-50 rounded-full text-medical-primary group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                             <Icon className="w-8 h-8" />
+                           <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+                           
+                           <div className="relative z-10">
+                             <div className="w-14 h-14 rounded-2xl bg-white shadow-md border border-slate-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                               <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center group-hover:bg-blue-600 transition-colors duration-300">
+                                 <Icon className="w-6 h-6 text-blue-600 group-hover:text-white transition-colors duration-300" />
+                               </div>
+                             </div>
+                             
+                             <h3 className="font-bold text-slate-800 text-lg mb-1 group-hover:text-blue-700 transition-colors">{specialty.name}</h3>
+                             <p className="text-sm text-slate-400 font-medium">{specialty.prescriptions.length} protocoles</p>
                            </div>
-                           <h3 className="font-bold text-gray-800 text-lg group-hover:text-blue-800">{specialty.name}</h3>
-                           <span className="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded-full">
-                             {specialty.prescriptions.length} fiches
-                           </span>
+                           
+                           <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-x-2 group-hover:translate-x-0">
+                             <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                               <ChevronRight className="w-4 h-4 text-blue-600" />
+                             </div>
+                           </div>
                          </button>
                        )
                     })}
@@ -233,74 +266,89 @@ function App() {
               <>
                 {selectedPrescription ? (
                   /* VIEW: DETAIL (Single Prescription) */
-                  <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 max-w-4xl mx-auto">
-                    <div className="mb-4 print:hidden">
-                      <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
-                        {searchTerm 
-                          ? 'Recherche' 
-                          : (viewMode === 'alphabetical' ? 'Index Global' : specialties.find(s => s.id === selectedSpecialtyId)?.name)
-                        }
-                      </span>
+                  <div className="animate-in fade-in slide-in-from-bottom-8 duration-500 max-w-4xl mx-auto">
+                    <div className="mb-6 print:hidden flex items-center justify-between">
+                       <div className="flex items-center gap-2 text-sm font-medium text-slate-400">
+                         <span className="uppercase tracking-wider">{viewMode === 'alphabetical' ? 'Index' : currentSpecialty?.name}</span>
+                         <ChevronRight className="w-4 h-4" />
+                         <span className="text-blue-600">{selectedPrescription.title}</span>
+                       </div>
                     </div>
                     <PrescriptionCard prescription={selectedPrescription} />
                   </div>
                 ) : (
                   /* VIEW: LIST (Selection) */
-                  <div className="animate-in fade-in duration-300 max-w-4xl mx-auto">
-                    <div className="flex items-center justify-between mb-6 border-b-2 border-medical-primary/10 pb-4">
-                      <h2 className="text-2xl md:text-3xl font-serif text-medical-primary font-bold truncate">
-                        {currentSpecialtyName}
-                      </h2>
-                      <span className="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full font-mono shrink-0 ml-4">
-                        {displayItems.length} ordonnance{displayItems.length > 1 ? 's' : ''}
-                      </span>
-                    </div>
+                  <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-5xl mx-auto">
+                    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-6">
+                      <div className="p-8 bg-gradient-to-r from-slate-50 to-white border-b border-slate-100">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h2 className="text-3xl font-serif text-slate-800 font-bold mb-2">
+                              {currentViewTitle}
+                            </h2>
+                            <p className="text-slate-500">
+                              Sélectionnez une pathologie pour voir l'ordonnance type.
+                            </p>
+                          </div>
+                          <div className="bg-white px-4 py-2 rounded-lg border border-slate-200 shadow-sm text-center">
+                             <span className="block text-2xl font-bold text-blue-600">{displayItems.length}</span>
+                             <span className="text-xs text-slate-400 uppercase font-bold tracking-wider">Fiches</span>
+                          </div>
+                        </div>
+                      </div>
 
-                    {displayItems.length === 0 ? (
-                      <div className="text-center py-20 text-gray-500 bg-white rounded-lg shadow-sm border border-gray-200">
-                        <p className="text-lg">Aucun résultat trouvé.</p>
-                        {searchTerm && (
-                          <button 
-                            onClick={() => setSearchTerm('')}
-                            className="mt-4 text-blue-600 hover:underline"
-                          >
-                            Effacer la recherche
-                          </button>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-1 gap-3">
-                        {displayItems.map((item, idx) => (
-                          <button
-                            key={`${item.prescription.id}-${idx}`}
-                            onClick={() => handleSelectPrescription(item.prescription)}
-                            className="group bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:border-blue-400 hover:shadow-md transition-all duration-200 text-left flex items-center justify-between"
-                          >
-                            <div className="flex items-start gap-4 w-full min-w-0">
-                              <div className="bg-blue-50 p-2 rounded-full text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors mt-1 shrink-0">
-                                <FileText className="w-5 h-5" />
+                      {displayItems.length === 0 ? (
+                        <div className="text-center py-24">
+                          <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <Search className="w-8 h-8 text-slate-300" />
+                          </div>
+                          <h3 className="text-lg font-medium text-slate-900">Aucun résultat trouvé</h3>
+                          <p className="text-slate-500 mt-1">Essayez de modifier votre recherche.</p>
+                          {searchTerm && (
+                            <button 
+                              onClick={() => setSearchTerm('')}
+                              className="mt-4 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors"
+                            >
+                              Effacer la recherche
+                            </button>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="divide-y divide-slate-100">
+                          {displayItems.map((item, idx) => (
+                            <button
+                              key={`${item.prescription.id}-${idx}`}
+                              onClick={() => handleSelectPrescription(item.prescription)}
+                              className="w-full group hover:bg-blue-50/50 transition-colors p-6 text-left flex items-center justify-between"
+                            >
+                              <div className="flex items-start gap-5 min-w-0">
+                                <div className="mt-1 w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-sm">
+                                  <FileText className="w-5 h-5" />
+                                </div>
+                                <div className="min-w-0">
+                                  <h3 className="font-bold text-slate-700 group-hover:text-blue-700 text-lg mb-1 truncate transition-colors">
+                                    {item.prescription.title}
+                                  </h3>
+                                  {item.prescription.subtitle && (
+                                    <p className="text-slate-500 text-sm mb-2 italic">
+                                      {item.prescription.subtitle}
+                                    </p>
+                                  )}
+                                  {(viewMode === 'alphabetical' || searchTerm) && (
+                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200">
+                                      {item.specialtyName}
+                                    </span>
+                                  )}
+                                </div>
                               </div>
-                              <div className="min-w-0 flex-1">
-                                <h3 className="font-bold text-gray-800 group-hover:text-blue-800 text-base md:text-lg leading-tight truncate">
-                                  {item.prescription.title}
-                                </h3>
-                                {item.prescription.subtitle && (
-                                  <p className="text-gray-500 text-xs md:text-sm mt-1 italic truncate">
-                                    {item.prescription.subtitle}
-                                  </p>
-                                )}
-                                {(viewMode === 'alphabetical' || searchTerm) && (
-                                  <span className="inline-block mt-2 text-[10px] font-bold text-gray-400 uppercase tracking-wider bg-gray-100 px-2 py-0.5 rounded">
-                                    {item.specialtyName}
-                                  </span>
-                                )}
+                              <div className="w-8 h-8 rounded-full flex items-center justify-center text-slate-300 group-hover:bg-white group-hover:text-blue-500 group-hover:shadow-md transition-all duration-300 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0">
+                                <ChevronRight className="w-5 h-5" />
                               </div>
-                            </div>
-                            <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-blue-500 shrink-0 ml-2" />
-                          </button>
-                        ))}
-                      </div>
-                    )}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
               </>
