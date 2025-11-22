@@ -113,6 +113,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {specialties.map((specialty) => {
             const Icon = iconMap[specialty.icon] || Activity;
             const isSelected = viewMode === 'specialty' && selectedSpecialtyId === specialty.id;
+            const color = specialty.color || 'blue';
             
             return (
               <li key={specialty.id}>
@@ -120,15 +121,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   onClick={() => onSelectSpecialty(specialty.id)}
                   className={`w-full flex items-center justify-between px-4 py-2.5 rounded-lg transition-all duration-200 text-left group ${
                     isSelected 
-                      ? 'bg-slate-800 text-white border-l-4 border-blue-500 pl-3' 
+                      ? 'bg-slate-800 text-white pl-3' 
                       : 'border-l-4 border-transparent hover:bg-white/5 text-slate-400 hover:text-slate-200'
                   }`}
+                  style={isSelected ? { borderLeft: `4px solid` } : {}}
                 >
                   <div className="flex items-center gap-3 overflow-hidden">
-                    <Icon className={`w-4 h-4 flex-shrink-0 transition-colors ${isSelected ? 'text-blue-400' : 'text-slate-600 group-hover:text-blue-400'}`} />
+                     {/* Dynamic Color Border Hack via Style for Active State */}
+                     {isSelected && (
+                        <style>{`
+                           button[style*="border-left"] {
+                              border-color: var(--tw-${color}); /* Fallback or use JS logic below */
+                           }
+                        `}</style>
+                     )}
+                    <Icon className={`w-4 h-4 flex-shrink-0 transition-colors ${isSelected ? `text-${color}-400` : `text-slate-600 group-hover:text-${color}-400`}`} />
                     <span className="font-medium text-sm truncate">{specialty.name}</span>
                   </div>
-                  {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"></div>}
+                  {isSelected && <div className={`w-1.5 h-1.5 rounded-full bg-${color}-500 shadow-[0_0_8px_rgba(255,255,255,0.3)]`}></div>}
                 </button>
               </li>
             );

@@ -4,9 +4,10 @@ import { Printer, Copy, Check } from 'lucide-react';
 
 interface PrescriptionCardProps {
   prescription: Prescription;
+  color?: string;
 }
 
-export const PrescriptionCard: React.FC<PrescriptionCardProps> = ({ prescription }) => {
+export const PrescriptionCard: React.FC<PrescriptionCardProps> = ({ prescription, color = 'blue' }) => {
   const [copied, setCopied] = React.useState(false);
 
   const handleCopy = () => {
@@ -26,17 +27,17 @@ export const PrescriptionCard: React.FC<PrescriptionCardProps> = ({ prescription
       <div className="absolute inset-0 bg-prescription-pattern opacity-10 pointer-events-none"></div>
 
       {/* Top colored bar */}
-      <div className="h-3 bg-medical-primary w-full top-0 left-0 absolute print:hidden"></div>
+      <div className={`h-3 w-full top-0 left-0 absolute print:hidden bg-${color}-600`}></div>
       
       <div className="p-4 md:p-8 relative">
         {/* Header Area */}
-        <div className="flex flex-col md:flex-row justify-between md:items-start gap-4 mb-6 border-b-2 border-medical-primary/20 pb-4">
+        <div className={`flex flex-col md:flex-row justify-between md:items-start gap-4 mb-6 border-b-2 border-${color}-100 pb-4`}>
           <div className="flex-1">
-            <h3 className="text-xl md:text-2xl font-serif text-medical-primary font-bold mb-1 leading-tight">
+            <h3 className={`text-xl md:text-2xl font-serif font-bold mb-1 leading-tight text-${color}-700`}>
               {prescription.title}
             </h3>
             {prescription.subtitle && (
-              <p className="text-medical-secondary font-medium italic text-sm mt-1">
+              <p className="text-slate-500 font-medium italic text-sm mt-1">
                 {prescription.subtitle}
               </p>
             )}
@@ -45,14 +46,14 @@ export const PrescriptionCard: React.FC<PrescriptionCardProps> = ({ prescription
           <div className="flex gap-2 self-end md:self-start print:hidden shrink-0">
             <button 
               onClick={handleCopy}
-              className="p-2 text-gray-400 hover:text-medical-primary transition-colors rounded-full hover:bg-blue-50 border border-gray-100 md:border-0"
+              className={`p-2 text-gray-400 hover:text-${color}-600 transition-colors rounded-full hover:bg-${color}-50 border border-gray-100 md:border-0`}
               title="Copier l'ordonnance"
             >
               {copied ? <Check className="w-5 h-5 text-green-600" /> : <Copy className="w-5 h-5" />}
             </button>
             <button 
               onClick={handlePrint}
-              className="p-2 text-gray-400 hover:text-medical-primary transition-colors rounded-full hover:bg-blue-50 border border-gray-100 md:border-0"
+              className={`p-2 text-gray-400 hover:text-${color}-600 transition-colors rounded-full hover:bg-${color}-50 border border-gray-100 md:border-0`}
               title="Exporter en PDF (Imprimer)"
             >
               <Printer className="w-5 h-5" />
@@ -67,21 +68,21 @@ export const PrescriptionCard: React.FC<PrescriptionCardProps> = ({ prescription
             {prescription.lines.map((line, idx) => {
               if (line.isHeader) {
                 return (
-                   <li key={idx} className="mt-6 mb-3 font-bold text-medical-primary font-sans text-xs md:text-sm uppercase tracking-widest border-b border-gray-300 pb-1">
+                   <li key={idx} className={`mt-6 mb-3 font-bold text-${color}-700 font-sans text-xs md:text-sm uppercase tracking-widest border-b border-gray-300 pb-1`}>
                     {line.text}
                   </li>
                 );
               }
               if (line.isNote) {
                 return (
-                   <li key={idx} className="mt-2 mb-2 text-base md:text-lg text-medical-secondary/80 font-sans italic pl-4 border-l-4 border-gray-300 bg-gray-50/50 p-2">
+                   <li key={idx} className="mt-2 mb-2 text-base md:text-lg text-slate-500 font-sans italic pl-4 border-l-4 border-gray-300 bg-gray-50/50 p-2">
                     {line.text}
                   </li>
                 );
               }
               return (
                 <li key={idx} className="flex items-start gap-2 md:gap-3 mb-2 pl-1 md:pl-2">
-                  <span className="text-medical-primary/40 mt-1 md:mt-2 select-none text-base">▪</span>
+                  <span className={`text-${color}-400 mt-1 md:mt-2 select-none text-base`}>▪</span>
                   <span className="break-words w-full">{line.text}</span>
                 </li>
               );
@@ -93,7 +94,7 @@ export const PrescriptionCard: React.FC<PrescriptionCardProps> = ({ prescription
              <div className="mt-8 pt-4 border-t border-dashed border-gray-300 font-sans text-xs md:text-sm">
                 {prescription.notes?.map((n, i) => (
                   <p key={`note-${i}`} className="text-gray-600 italic mb-1">
-                    <span className="font-bold text-medical-secondary">Note:</span> {n}
+                    <span className="font-bold text-slate-500">Note:</span> {n}
                   </p>
                 ))}
                 {prescription.warnings?.map((w, i) => (

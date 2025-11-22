@@ -17,11 +17,13 @@ export interface Specialty {
   id: string;
   name: string;
   icon: string; // Icon name for Lucide
+  color: string; // Tailwind color name (e.g., 'rose', 'blue')
   prescriptions: Prescription[];
 }
 
 export type SearchResult = {
   specialtyId: string;
   specialtyName: string;
+  specialtyColor: string;
   prescription: Prescription;
 };

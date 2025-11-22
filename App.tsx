@@ -64,7 +64,7 @@ function App() {
   const displayItems = useMemo(() => {
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
-      let results: Array<{ prescription: Prescription, specialtyName: string }> = [];
+      let results: Array<{ prescription: Prescription, specialtyName: string, specialtyColor: string }> = [];
       
       specialties.forEach(s => {
         s.prescriptions.forEach(p => {
@@ -73,7 +73,7 @@ function App() {
             p.subtitle?.toLowerCase().includes(term) ||
             p.lines.some(l => l.text.toLowerCase().includes(term))
           ) {
-            results.push({ prescription: p, specialtyName: s.name });
+            results.push({ prescription: p, specialtyName: s.name, specialtyColor: s.color });
           }
         });
       });
@@ -81,10 +81,10 @@ function App() {
     }
 
     if (viewMode === 'alphabetical') {
-      let all: Array<{ prescription: Prescription, specialtyName: string }> = [];
+      let all: Array<{ prescription: Prescription, specialtyName: string, specialtyColor: string }> = [];
       specialties.forEach(s => {
         s.prescriptions.forEach(p => {
-          all.push({ prescription: p, specialtyName: s.name });
+          all.push({ prescription: p, specialtyName: s.name, specialtyColor: s.color });
         });
       });
       return all.sort((a, b) => a.prescription.title.localeCompare(b.prescription.title));
@@ -95,7 +95,8 @@ function App() {
       if (specialty) {
         return specialty.prescriptions.map(p => ({
           prescription: p,
-          specialtyName: specialty.name
+          specialtyName: specialty.name,
+          specialtyColor: specialty.color
         }));
       }
     }
@@ -248,29 +249,30 @@ function App() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
                     {specialties.map((specialty, idx) => {
                        const Icon = iconMap[specialty.icon] || Activity;
+                       const color = specialty.color || 'blue';
                        return (
                          <button 
                            key={specialty.id}
                            onClick={() => handleSelectSpecialty(specialty.id)}
-                           className="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl border border-slate-100 hover:border-blue-100 transition-all duration-300 hover:-translate-y-1 text-left overflow-hidden"
+                           className={`group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl border border-slate-100 hover:border-${color}-100 transition-all duration-300 hover:-translate-y-1 text-left overflow-hidden`}
                            style={{ animationDelay: `${idx * 50}ms` }}
                          >
-                           <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+                           <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-${color}-50 to-${color}-100/50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110`}></div>
                            
                            <div className="relative z-10">
                              <div className="w-14 h-14 rounded-2xl bg-white shadow-md border border-slate-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                               <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center group-hover:bg-blue-600 transition-colors duration-300">
-                                 <Icon className="w-6 h-6 text-blue-600 group-hover:text-white transition-colors duration-300" />
+                               <div className={`w-10 h-10 rounded-xl bg-${color}-50 flex items-center justify-center group-hover:bg-${color}-500 transition-colors duration-300`}>
+                                 <Icon className={`w-6 h-6 text-${color}-500 group-hover:text-white transition-colors duration-300`} />
                                </div>
                              </div>
                              
-                             <h3 className="font-bold text-slate-800 text-lg mb-1 group-hover:text-blue-700 transition-colors">{specialty.name}</h3>
+                             <h3 className={`font-bold text-slate-800 text-lg mb-1 group-hover:text-${color}-600 transition-colors`}>{specialty.name}</h3>
                              <p className="text-sm text-slate-400 font-medium">{specialty.prescriptions.length} protocoles</p>
                            </div>
                            
                            <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-x-2 group-hover:translate-x-0">
-                             <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                               <ChevronRight className="w-4 h-4 text-blue-600" />
+                             <div className={`w-8 h-8 rounded-full bg-${color}-100 flex items-center justify-center`}>
+                               <ChevronRight className={`w-4 h-4 text-${color}-600`} />
                              </div>
                            </div>
                          </button>
@@ -288,27 +290,33 @@ function App() {
                        <div className="flex items-center gap-2 text-sm font-medium text-slate-400">
                          <span className="uppercase tracking-wider">{viewMode === 'alphabetical' ? 'Index' : currentSpecialty?.name}</span>
                          <ChevronRight className="w-4 h-4" />
-                         <span className="text-blue-600">{selectedPrescription.title}</span>
+                         <span className={`text-${currentSpecialty?.color || 'blue'}-600`}>{selectedPrescription.title}</span>
                        </div>
                     </div>
-                    <PrescriptionCard prescription={selectedPrescription} />
+                    {/* Pass specialty color to card if available, else check display items for search results context */}
+                    <PrescriptionCard 
+                      prescription={selectedPrescription} 
+                      color={currentSpecialty?.color || displayItems.find(i => i.prescription.id === selectedPrescription.id)?.specialtyColor}
+                    />
                   </div>
                 ) : (
                   /* VIEW: LIST (Selection) */
                   <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-5xl mx-auto">
                     <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-6">
                       <div className="p-8 bg-gradient-to-r from-slate-50 to-white border-b border-slate-100">
-                        <div className="flex items-start justify-between">
+                        <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                           <div>
-                            <h2 className="text-3xl font-serif text-slate-800 font-bold mb-2">
+                            <h2 className={`text-3xl font-serif font-bold mb-2 ${currentSpecialty ? `text-${currentSpecialty.color}-700` : 'text-slate-800'}`}>
                               {currentViewTitle}
                             </h2>
                             <p className="text-slate-500">
                               Sélectionnez une pathologie pour voir l'ordonnance type.
                             </p>
                           </div>
-                          <div className="bg-white px-4 py-2 rounded-lg border border-slate-200 shadow-sm text-center">
-                             <span className="block text-2xl font-bold text-blue-600">{displayItems.length}</span>
+                          <div className="bg-white px-4 py-2 rounded-lg border border-slate-200 shadow-sm text-center self-start">
+                             <span className={`block text-2xl font-bold ${currentSpecialty ? `text-${currentSpecialty.color}-600` : 'text-blue-600'}`}>
+                                {displayItems.length}
+                             </span>
                              <span className="text-xs text-slate-400 uppercase font-bold tracking-wider">Fiches</span>
                           </div>
                         </div>
@@ -336,18 +344,18 @@ function App() {
                             <button
                               key={`${item.prescription.id}-${idx}`}
                               onClick={() => handleSelectPrescription(item.prescription)}
-                              className="w-full group hover:bg-blue-50/50 transition-colors p-6 text-left flex items-center justify-between"
+                              className={`w-full group hover:bg-${item.specialtyColor}-50/30 transition-colors p-4 md:p-6 text-left flex items-center justify-between`}
                             >
-                              <div className="flex items-start gap-5 min-w-0">
-                                <div className="mt-1 w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-sm">
+                              <div className="flex items-start gap-4 md:gap-5 min-w-0">
+                                <div className={`mt-1 w-10 h-10 rounded-full bg-${item.specialtyColor}-100 text-${item.specialtyColor}-600 flex items-center justify-center shrink-0 group-hover:bg-${item.specialtyColor}-500 group-hover:text-white transition-all duration-300 shadow-sm`}>
                                   <FileText className="w-5 h-5" />
                                 </div>
-                                <div className="min-w-0">
-                                  <h3 className="font-bold text-slate-700 group-hover:text-blue-700 text-lg mb-1 truncate transition-colors">
+                                <div className="min-w-0 flex-1">
+                                  <h3 className={`font-bold text-slate-700 group-hover:text-${item.specialtyColor}-700 text-base md:text-lg mb-1 break-words transition-colors leading-tight`}>
                                     {item.prescription.title}
                                   </h3>
                                   {item.prescription.subtitle && (
-                                    <p className="text-slate-500 text-sm mb-2 italic">
+                                    <p className="text-slate-500 text-sm mb-2 italic truncate">
                                       {item.prescription.subtitle}
                                     </p>
                                   )}
@@ -358,7 +366,7 @@ function App() {
                                   )}
                                 </div>
                               </div>
-                              <div className="w-8 h-8 rounded-full flex items-center justify-center text-slate-300 group-hover:bg-white group-hover:text-blue-500 group-hover:shadow-md transition-all duration-300 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0">
+                              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-slate-300 group-hover:bg-white group-hover:text-${item.specialtyColor}-500 group-hover:shadow-md transition-all duration-300 md:opacity-0 md:group-hover:opacity-100 md:transform md:translate-x-2 md:group-hover:translate-x-0 shrink-0 ml-2`}>
                                 <ChevronRight className="w-5 h-5" />
                               </div>
                             </button>
