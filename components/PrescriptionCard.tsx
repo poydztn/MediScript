@@ -1,6 +1,6 @@
 import React from 'react';
 import { Prescription } from '../types';
-import { Printer, Copy, Check } from 'lucide-react';
+import { Printer, Copy, Check, AlertCircle } from 'lucide-react';
 
 interface PrescriptionCardProps {
   prescription: Prescription;
@@ -118,6 +118,18 @@ export const PrescriptionCard: React.FC<PrescriptionCardProps> = ({ prescription
             <span className="text-[8px] md:text-[10px] text-gray-500 uppercase tracking-widest">Signature & Cachet</span>
           </div>
         </div>
+
+        {/* Legal Disclaimer Footer */}
+        <div className="mt-8 pt-4 border-t-2 border-dotted border-gray-200">
+          <div className="flex items-center justify-center gap-2 text-gray-400 bg-gray-50/80 p-2 rounded text-center">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            <div>
+              <p className="text-[10px] uppercase tracking-widest font-bold">Modèle à but pédagogique uniquement</p>
+              <p className="text-[9px]">Ce document ne constitue pas une ordonnance médicale valide et ne doit pas être utilisé pour la délivrance de médicaments.</p>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );
