@@ -3,7 +3,7 @@ import { specialties } from '../data';
 import { 
   Activity, Heart, Stethoscope, TestTube, Baby, Bug, Wind, Bone, Ear, 
   Brain, Eye, Hammer, FileText, ChevronRight, Droplet, Users, Siren,
-  SortAsc, X
+  SortAsc, X, LayoutGrid
 } from 'lucide-react';
 
 const iconMap: Record<string, any> = {
@@ -13,9 +13,10 @@ const iconMap: Record<string, any> = {
 
 interface SidebarProps {
   selectedSpecialtyId: string | null;
-  viewMode: 'specialty' | 'alphabetical';
+  viewMode: 'dashboard' | 'specialty' | 'alphabetical';
   onSelectSpecialty: (id: string) => void;
   onSelectAlphabetical: () => void;
+  onSelectDashboard: () => void;
   onClose?: () => void;
 }
 
@@ -24,18 +25,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
   viewMode,
   onSelectSpecialty,
   onSelectAlphabetical,
+  onSelectDashboard,
   onClose
 }) => {
   return (
     <div className="w-64 md:w-72 bg-medical-primary text-white h-screen flex flex-col shadow-2xl print:hidden border-r border-blue-800">
       <div className="p-6 border-b border-blue-800 bg-blue-900 flex items-center justify-between">
-        <div>
+        <button onClick={onSelectDashboard} className="text-left focus:outline-none">
           <h1 className="text-xl font-serif font-bold tracking-wider flex items-center gap-2">
             <FileText className="w-6 h-6 text-blue-300" />
-            MEDISCRIPT
+            ORDO FACILE
           </h1>
           <p className="text-xs text-blue-300 mt-1 font-mono">Bibliothèque médicale</p>
-        </div>
+        </button>
         {/* Close button for mobile */}
         {onClose && (
           <button 
@@ -48,7 +50,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
         )}
       </div>
       
-      <div className="p-2 border-b border-blue-800">
+      <div className="p-2 border-b border-blue-800 space-y-1">
+         <button
+            onClick={onSelectDashboard}
+            className={`w-full flex items-center justify-between px-4 py-3 rounded transition-all duration-200 text-left group ${
+              viewMode === 'dashboard'
+                ? 'bg-blue-800 text-white shadow-inner font-bold' 
+                : 'hover:bg-blue-800/50 text-blue-200 hover:text-white'
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <LayoutGrid className={`w-5 h-5 ${viewMode === 'dashboard' ? 'text-blue-300' : 'text-blue-400'}`} />
+              <span className="text-sm">Accueil</span>
+            </div>
+            {viewMode === 'dashboard' && <ChevronRight className="w-4 h-4 text-blue-300" />}
+          </button>
+
          <button
             onClick={onSelectAlphabetical}
             className={`w-full flex items-center justify-between px-4 py-3 rounded transition-all duration-200 text-left group ${
@@ -95,7 +112,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </nav>
 
       <div className="p-4 bg-blue-900 text-xs text-blue-400 font-mono border-t border-blue-800 text-center">
-        v2.1 • Noms commerciaux
+        Ordo Facile v3.0
       </div>
     </div>
   );
