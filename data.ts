@@ -289,6 +289,54 @@ const dermatoPrescriptions = [
     '-VASELINE SALICYLEE 10% : 1app*2/j',
     'OU DUOFILM : 1app *2/j',
     'OU cryothérapie'
+  ]),
+  normalize('Ongle incarné', [
+    '-Rinçage avec HEXOMEDINE (isomedine) puis sécher',
+    '-Appliquer fucidine pommade (Antibiotique à usage local)',
+    '-ATB si pus (ex: amoxicilline)',
+    '-puis à enlever par une petite incision (Traumato ou chirurgie générale)'
+  ]),
+  normalize("Piqûre d'insecte", [
+    '-CLARITYNE 10mg (antihistaminique) : 01cp/j le matin',
+    '-CELESTENE 2mg (betamétasone) : 1cp le matin pendant 5j',
+    '-AMOXIL 1g : 1cp x 02/j pendant 7j'
+  ]),
+  normalize('Brûlure (Traitement ambulatoire)', [
+    '-Flammazine pommade : 1app 3/j',
+    '-DOLIPRANE 15mg/kg/6h',
+    '-ASTAPH 500mg : 1cp 3/j',
+    '-Si 2ème ou 3ème degré : hospitalisation'
+  ]),
+  normalize('Cicatrice', [
+    '-CICATRIZEN (CREME CICATRISANTE) : 1app/j'
+  ]),
+  normalize('Dermatite atopique', [
+    '-LOCAPRED CREME 0.1% :',
+    ' 1app/j pendant 1 semaine',
+    ' 1app/2j pendant 1 semaine',
+    ' 1app/3j pendant 1 semaine puis arrêt',
+    '-PRIMALAN sirop (antihistaminique) : 1cam/5kg 2/j',
+    '-Emmolient hydratant vaseline blanche : jusqu\'à 4 fois/j'
+  ]),
+  normalize('Dermite séborrhéique', [
+    '-TEGUMA CREME 1% (antimycosique) : app 2/j pdt 21j',
+    '-DOLIPRANE 1g : 1cp 3/j'
+  ]),
+  normalize('Engelures', [
+    'Pas de médicament avec AMM spécifique.',
+    '-Sinon LOCAPRED CREME 0.1% (Dermocorticoïde)',
+    '-OU ASEPTA AKILENJUR (parapharmacie)'
+  ]),
+  normalize('Erythème polymorphe', [
+    { type: 'header', content: 'Si plusieurs récidives post-herpétiques' },
+    '-ZELITREX 500mg (Antiviral) : 1cp/j pdt 6 mois',
+    '-Ecran solaire',
+    { type: 'header', content: 'Si pas de récidive' },
+    '-HEXOMEDINE : 1app 2/j'
+  ]),
+  normalize('Anthrax', [
+    '-CIPROXINE (Ciprofloxacine) IV 400 mg/12h : 1g amp inj 1inj/j en IM',
+    '-Relais per os dés que possible CIPROXINE 500mg 1cp 2/j'
   ])
 ];
 
@@ -428,6 +476,9 @@ const cardioPrescriptions = [
     'INR > 9 (Pas de saignement) : Vit K 3 à 5mg, renouveler si besoin',
     'Saignement majeur : Hospitalisation, Arrêt AVK, PPSB + Vit K 10mg',
     'Saignement mineur : Hospitalisation, vit K'
+  ]),
+  normalize('Hypotension orthostatique', [
+    '-EFFORTIL (Etiléfrine) 20 à 25 gouttes 3 fois par jour'
   ])
 ];
 
@@ -569,6 +620,67 @@ const gastroPrescriptions = [
     { type: 'header', content: 'Si tolérance moyenne (Hospitalisation)' },
     { drug: 'AUGMENTIN 1g injectable', dosage: '1g*3/j' },
     { drug: 'OU OFLOCET 200mg injectable', dosage: '1inj.*2/j tant que la fièvre persiste, puis relais per os' }
+  ]),
+  normalize('Fécalome', [
+    { type: 'header', content: 'Le fécalome n\'est pas dur' },
+    '-Faire un lavement de type Zetalax DM 1 à 2 microlavements par jour.',
+    '-Puis faire suivre d\'un ou deux lavements d\'eau tiède (environ 500 cc) additionnés de 100 cc d\'huile de vaseline.',
+    '-Il est impératif d\'effectuer ces lavements sous faible pression.',
+    { type: 'header', content: 'Le fécalome est dur' },
+    '-Ramollir le fécalome par un lavement huileux (500cc eau tiède + 100cc huile vaseline).',
+    '-De petits lavements à l\'eau oxygénée 10 volumes (2 cuillères à soupe dans 200 cc).',
+    '-Procéder à la fragmentation au doigt si nécessaire.',
+    '-Poursuivre l\'évacuation par lavements.',
+    '-Vérifier par toucher rectal que l\'évacuation est complète.'
+  ], { notes: ['Prévention : Alimentation variée contenant des légumes tous les jours. Hydratation correcte (1.5L/j). Marche régulière.'] }),
+  normalize('Gastro-entérite aiguë', [
+    '-SPASFON : 2cp 3/j',
+    '-CLOPRAME sirop : 1cas 3/j si vomissement',
+    '-Si fièvre ou syndrome dysentérique (antibiothérapie): COTRIM FORT 1cp 2/j pdt 5j'
+  ]),
+  normalize('Hémorroïdes simples', [
+    '-OSMOLAX SIROP : 1cas 3/j pdt 5j',
+    '-TITANOREINE POMMADE : 1app 2/J pendant 10j',
+    '-TITANOREINE SUPPO : 1suppo 2/J pendant 10j',
+    '-BI-PROFÉNID 100 mg (ains) : 1cp 2/J pendant 5j',
+    '-IPP chez les sujets à risque : KALEST 20mg 1cp le matin pdt 5J'
+  ], { notes: ['Mesures hygiéno-diététiques : Augmenter la consommation de fibres, boire suffisamment, activité physique modérée.'] }),
+  normalize('Hépatite A', [
+    '-Pas de traitement spécifique',
+    '-Repos conseillé',
+    '-Arrêt de l\'alcool et des médicaments hépatotoxiques',
+    '-Surveillance clinique et du TP'
+  ]),
+  normalize('Hépatite B', [
+    { type: 'header', content: '1- Aiguë' },
+    '-Recherche de MST et sérologies',
+    '-Surveillance clinique et bilan hépatique (hospitaliser si TP < 50%)',
+    '-Arrêt de l\'alcool et des médicaments hépatotoxiques',
+    '-Surveillance de l\'Ag HBs (doit disparaitre à 6 mois sinon hépatite B chronique)',
+    { type: 'header', content: '2- Chronique' },
+    '-Suivi spécialisé'
+  ]),
+  normalize('Vomissement / Nausée', [
+    '-CLOPRAME sirop : 1cas 3/j'
+  ]),
+  normalize('Coliques hépatiques simples', [
+    '-SPASFON : 2cp 3/j'
+  ], { notes: ['Pas de défense, pas de fièvre, moins de 6h'] }),
+  normalize('Colopathie fonctionnelle', [
+    { type: 'header', content: 'Si ballonnement' },
+    '-EUCARBON : 1cp 3/j',
+    { type: 'header', content: 'Si constipation' },
+    '-DUPHALAC : 1cas 3/j',
+    { type: 'header', content: 'Si diarrhée' },
+    '-SMECTA : 1s 3/j',
+    { type: 'header', content: 'Si douleur' },
+    '-SPASFON : 1 cp 3/j'
+  ]),
+  normalize('Abcès anal', [
+    '-AUGMENTIN (amoxicilline protégée) 1g 3/j pdt 10J',
+    '-FLAGYL 500mg(metronidazole) 1cp 3/j pdt 8j',
+    '-DOLIPRANE 1g (paracétamol) 1cp 3/j si douleur',
+    '-Drainage chirugical'
   ])
 ];
 
@@ -672,6 +784,18 @@ const endocrinoPrescriptions = [
   normalize('Hyperprolactinémie', [
     { drug: 'DOSTINEX 0,5 mg cp', dosage: '1/2 cp /semaine au milieu du repas du soir' },
     { drug: 'Augmentation', dosage: 'mensuelle jusqu’à normalisation (max 9cp/semaine)' }
+  ]),
+  normalize('Carence en Vitamine D', [
+    { type: 'header', content: 'Entre 20 et 30ng/ml' },
+    'D-CURE FORTE ampoule : 1 amp à J0 et 1 amp à J14 (total 2 amp)',
+    { type: 'header', content: 'Entre 10 et 20ng/ml' },
+    'D-CURE FORTE ampoule : 1 amp à J0 et 1 amp à J14 et 1 amp à J28 (total 3 amp)',
+    { type: 'header', content: 'Inférieure à 10ng/ml' },
+    'D-CURE FORTE ampoule : 1 amp à J0 et 1 amp à J14 et 1 amp à J28 et 1 amp à J42 (total 4 amp)'
+  ]),
+  normalize('Asthénie', [
+    '-Après avoir éliminé une cause organique',
+    '-SARGENOR 1g : 2 à 3 ampoules par jour'
   ])
 ];
 
@@ -777,6 +901,27 @@ const gynecoPrescriptions = [
     { text: 'ZOVIRAX 200mg cp : 1cp x 5/j jusqu’à l’accouchement' },
     { isHeader: true, text: 'Avant le dernier mois :' },
     { text: 'ZOVIRAX 200mg cp : 1cp x 5/j pendant 10 jours' }
+  ]),
+  normalize('Engorgement du sein', [
+    '-DOLIPRANE 1g 3/j',
+    '-Massage aréolaire',
+    '-Douche chaude ou serviette chaude'
+  ], { notes: ['Amélioration au bout de 24h, disparition au bout de 48h'] }),
+  normalize('Lymphangite du sein', [
+    '-DOLIPRANE 1g 3/j',
+    '-Massage aréolaire',
+    '-Douche chaude ou serviette chaude',
+    '-VOLTARENE 50mg : 1cp 3/j'
+  ]),
+  normalize('Abcès du sein', [
+    { type: 'header', content: 'En phase pré-suppurative (Ambulatoire)' },
+    '-Antibiothérapie antistaphylococcique (Pyostacine®) : 6 cp/j pendant 8 jours',
+    '-Antalgiques',
+    '-Jeter le lait de ce sein, tirer le lait de l\'autre sein',
+    { type: 'header', content: 'En phase collectée' },
+    '-Pas d\'antibiothérapie',
+    '-Incision - drainage sous anesthésie générale',
+    '-Contre-indication de l\'allaitement (sauf demande expresse après phase aiguë sur sein sain)'
   ])
 ];
 
@@ -879,6 +1024,35 @@ const infectioPrescriptions = [
     { text: 'CO-TRIM 400mg/80mg : 1cp par jour' },
     { isHeader: true, text: 'Toxoplasmose (si sérologie +) :' },
     { text: 'CO-TRIM : 1cp par jour' }
+  ]),
+  normalize('Chancre mixte', [
+    '-Bactrim forte : 1cp x 2/j pdt 7j',
+    '-EXTENCILLINE : inj en IM 2,4 M UI une seule injection',
+    '-Surveillance par VDRL, TPHA : 3, 6, 12, 24 mois'
+  ]),
+  normalize('Chancre mou', [
+    '-Bactrim forte : 1 cp x 2/j pdt 7j'
+  ]),
+  normalize('Syphilis', [
+     { type: 'header', content: '1- Primaire et secondaire précoce' },
+     '-EXTENCILLINE : 1 inj IM de 2,4 millions d\'unités',
+     { type: 'header', content: '2- Primaire et secondaire latente' },
+     '-EXTENCILLINE : 1 inj IM de 2,4 millions d\'unités par semaine pendant 3 semaines',
+     { type: 'header', content: '3- Neurosyphilis' },
+     '-EXTENCILLINE : 1 inj IV de 2,4 millions d\'unités par jour pendant 10 à 15 J'
+  ]),
+  normalize('Rickettsioses', [
+    '-VIBRAMYCINE 100mg : 1cp 2/j pdt 7 jours'
+  ]),
+  normalize('Shigellose', [
+    '-BACTRIM FORT (Sulfaméthoxazole/Triméthoprime) : 1cp 2/j pdt 10 jours'
+  ]),
+  normalize('Abcès dentaire', [
+    { type: 'header', content: 'Suivant gravité et emplacement' },
+    '-Prise d\'antibiotiques préalable si nécessaire',
+    '-Drainage si ampleur avancée',
+    '-Si origine gencive : drainage et curetage',
+    '-Si origine dentaire : nettoyage endodontique +/- couronne'
   ])
 ];
 
@@ -1055,6 +1229,16 @@ const ophtalmoPrescriptions = [
     { name: 'STERDEX capsule molle', dosage: '1 application matin et soir' },
     { type: 'header', content: 'Orgelet' },
     { name: 'TOBRADEX pommade', dosage: '1 application, 2 à 3 fois par jour (10 jours)' }
+  ]),
+  normalize('Oeil sec', [
+    '-Traitement étiologique',
+    '-Larmes artificielles LARMABAK 0,9% : 4-6 fois par jour'
+  ]),
+  normalize('Zona ophtalmique', [
+    '-ZELITREX 500mg (antiviraux) 2cp 3/j pdt 7j',
+    '-CODOLIPRANE 500 mg/30 mg (paracétamol+codeine) 1cp 3/j',
+    '-HEXOMEDINE (antiseptique) 1app 2/j',
+    '-Consultation ophtalmo'
   ])
 ];
 
@@ -1120,6 +1304,24 @@ const neuroPrescriptions = [
     { name: 'PRIMPERAN 10mg', dosage: '1cp, 3 fois par jour' },
     { type: 'header', content: 'Maladie de Menière' },
     { name: 'SERC 8mg', dosage: '2cp 3 fois par jour (15 jours)' }
+  ]),
+  normalize('Céphalée primaire (Céphalée de tension)', [
+    { type: 'header', content: 'Crise de faible intensité' },
+    '-DOLIPRANE 1g (paracétamol) : 1g 3/j',
+    { type: 'header', content: 'Crise de forte intensité' },
+    '-NURODOL 400 mg : 1 comprimé dès le début de la crise (max 3 jours)'
+  ]),
+  normalize('Névralgie du trijumeau', [
+    '-TEGRETOL 200mg cp : 1cp par jour pendant 3j',
+    '-Augmenter par 100mg (1/2 cp) chaque 5 j jusqu\'à dose efficace',
+    '-Max 2000mg/j (moyenne 800 à 1200mg/j)'
+  ]),
+  normalize('Myasthénie', [
+    '-MYTELASE 10mg (Antimyasthénique) : 1/2cp 2/j',
+    '-Puis augmenter de 1/2cp tous les 3 jours jusqu\'à 3cp/j'
+  ]),
+  normalize('Tremblement essentiel', [
+    '-AVLOCARDYL 40mg cp : 80 à 240mg/j'
   ])
 ];
 
@@ -1160,6 +1362,22 @@ const parasitoPrescriptions = [
     "Praziquantel 600mg cp : 2cp en une seule prise",
     { type: 'header', content: 'Enfant' },
     "Praziquantel : 20mg/kg en une seule prise"
+  ]),
+  normalize('Bilharziose', [
+    { type: 'header', content: 'Bilharzioses uro-génitale et intestinale' },
+    '-Biltricide® 600mg (praziquantel) : 40 mg/kg en 1 à 2 prises en un seul jour',
+    { type: 'header', content: 'Bilharzioses artério-veineuses' },
+    '-Biltricide® 600mg (praziquantel) : 60 mg/kg'
+  ], { notes: ['Un traitement chirurgical peut être proposé si le traitement médical n\'a pas fait régresser les lésions'] }),
+  normalize('Leishmaniose cutanée', [
+    { type: 'header', content: 'Traitement local' },
+    '-AUREOMYCINE 3% : 1app 3/j',
+    '-BÉTADINE jusqu\'à cicatrisation complète',
+    { type: 'header', content: 'Si lésions importantes' },
+    '-GLUCANTIME (ampoule 1.5g/5ml) : 1inj/semaine (injection en péri-lésionnel à 1cm de la lésion)'
+  ]),
+  normalize('Leishmaniose viscérale', [
+    '-GLUCANTIME injectable IM (ampoule de 5ml contient 1.5g) : 60mg/kg/j sans dépasser 2 ampoules pendant 20j'
   ])
 ];
 
@@ -1260,6 +1478,23 @@ const orlPrescriptions = [
   normalize('Surdité Brusque', [
     "SOLUMEDROL : 1mg/kg/j IM ou SOLUPRED : 1mg/kg/j per os",
     "Repos au calme, Vasodilatateurs ou oxygénateurs"
+  ]),
+  normalize('Pharyngite', [
+    '-ELUDRIL collutoire : 1 pulvérisation 3/j'
+  ]),
+  normalize('Rhume / Rhinopharyngite', [
+    '-HUMEX RHUME : 1cp 3/j',
+    '-MAXILASE SIROP : 1 cuillère à soupe 3/j'
+  ]),
+  normalize('Mal de gorge', [
+    '-ELUDRIL collutoire : 1 pulvérisation 3/j'
+  ]),
+  normalize('Mycoses du conduit auditif externe', [
+     '-AURICULARUM solution : 5gtt matin et soir pdt 14J'
+  ]),
+  normalize('Aphtes', [
+    '-Suppression des aliments favorisant les épines irritatives locales (détartrage, soins dentaires)',
+    '-ELUDRIL bain de bouche 1app 3/j'
   ])
 ];
 
@@ -1296,6 +1531,11 @@ const phleboPrescriptions = [
     "OU INNOHEP 175 UI/kg en une seule injection par jour",
     "PUIS PREVISCAN cp : 1 cp par jour le soir pendant 3 jours puis adapter à l’INR",
     "Bas ou collant de contention classe 2 (3 mois)"
+  ]),
+  normalize('Varices (Traitement médical)', [
+    '-VENULA 200mg (Vasculoprotecteurs) : 1cp 3/j pdt 3 mois',
+    '-VENOXYL GEL : 1app/j le soir',
+    '-Bas de contention + diminuer le poids + marche + coucher avec jambes pendantes'
   ])
 ];
 
@@ -1371,6 +1611,29 @@ const pediatriePrescriptions = [
     "MOTILIUM : 1 dose/Poids, 3 fois par jour avant repas",
     "Si œsophagite : + GAVISCON suspension buvable",
     "Si érosive : + ULCEMAT"
+  ]),
+  normalize('Oreillons', [
+    '-DOLIPRANE 15mg/kg/6h',
+    '-Repos'
+  ]),
+  normalize('Varicelle (Symptomatique)', [
+    '-PRIMALAN sirop (antihistaminique) : 1cam/5kg 2/j',
+    '-DOLIPRANE : 15mg/kg/6h',
+    '-HEXOMEDINE (antiseptique) : 1app 2/j'
+  ]),
+  normalize('Mycose du siège', [
+    '-FUNGILYSE CREME : 1app 2/j pdt 15j',
+    '-SAFORELLE SAVON : lavage 2/j pdt 15j',
+    '-Eviter les lingettes parfumées'
+  ]),
+  normalize('Rougeole', [
+    '-DOLIPRANE 15mg/kg/6h',
+    '-STERIMAR (Sérum physiologique) : 1 lavage 4/j',
+    '-Eviction scolaire'
+  ]),
+  normalize('Scarlatine', [
+    '-ERY 50mg/kg/j en 3 prises pdt 10j',
+    '-DOLIPRANE 15mg/kg/6h'
   ])
 ];
 
@@ -1462,6 +1725,15 @@ const psychiatriePrescriptions = [
     "OU ANAFRANIL 75mg : ½ cp J1, 1cp J2... jusqu'à 1cp-1cp (150mg)",
     "Durée : 1 à 2 ans",
     "+ ALPRAZ ou XANAX au début"
+  ]),
+  normalize('Crise hystérique', [
+    '-Au moment de la crise : ISOLEMENT +++',
+    '-Eviter de donner les TTT par VV: Essayez de NE RIEN DONNER, calmer le malade puis donner l\'ordonnance de sortie',
+    '-OXYMAG: 1cp le soir pdt 8jrs'
+  ]),
+  normalize('Attaque de panique (Urgence)', [
+    '-Xanax 0,5 mg cp: 2cp 3/12h',
+    '-Eliminer une organicité : AVC, épilepsie, hypoglycémie, embolie pulmonaire, IDM, crise d\'asthme, sevrage, prise de toxique'
   ])
 ];
 
@@ -1533,14 +1805,25 @@ const pneumoPrescriptions = [
     "- Hospitalisation",
     "- GLYPRESSINE 2mg en IVL"
   ]),
-  normalize('Traitement BK (6 mois)', [
-    "Poids 38-54kg :",
-    "- 2 mois : 3cp ERIP-K4",
-    "- 4 mois : 3cp RIFINAH 150",
-    "Poids 55-70kg :",
-    "- 2 mois : 4cp ERIP-K4",
-    "- 4 mois : 2cp RIFINAH 300",
-    "+ PRINCI-B Fort : 1 cp/J"
+  normalize('Toux', [
+    { type: 'header', content: 'Toux sèche gênante' },
+    '-DRILL TOUX SÉCHE SIROP : 1 cas 3/j',
+    { type: 'header', content: 'Toux productive' },
+    '-MUXOL SIROP : 1 cas 3/j'
+  ]),
+  normalize('Tuberculose pulmonaire', [
+    { type: 'header', content: 'Protocoles disponibles' },
+    '-(RH) : Rifampicine 150 mg + Isoniazide 75mg',
+    '-(RHZ) : Rifampicine 150 mg + Isoniazide 75 mg + Pyrazinamide 400 mg',
+    '-(RHZE) : Rifampicine 150 mg + Isoniazide 75 mg + Pyrazinamide 400 mg + Ethambutol 275 mg',
+    { type: 'header', content: 'Posologie (Prise unique à jeun)' },
+    '30-37 kg : 2 cp',
+    '38-54 kg : 3 cp',
+    '>55 kg : 4 cp',
+    { type: 'header', content: 'Exemple (Patient 50kg - TB pleuro-pulmonaire)' },
+    '-ERIP-K4 (RHZE): 3cp le matin en 1 seul prise à jeun pdt 2mois',
+    'PUIS',
+    '-RIFINAH (RH): 3cp le matin en 1 seul prise à jeun pdt 4mois'
   ])
 ];
 
@@ -1586,6 +1869,57 @@ const rhumatoPrescriptions = [
     { drug: 'CACIT 500mg', dosage: '1-2 cp par jour' },
     { drug: 'ACTONEL 5mg', dosage: '1 cp par jour (ou 35mg 1/semaine)' },
     { drug: 'FOSAMAX 70mg', dosage: '1 cp par semaine, à jeun' }
+  ]),
+  normalize('Cervicalgies', [
+    '-MYOXOL : 2cp 2/j pdt 7j',
+    '-PROFENID 100mg (AINS) : 1cp 2/j',
+    '-PROTON 20mg (Oméprazole) : 1 cp/j matin pdt 10j'
+  ]),
+  normalize('Rachialgie (Sans signe d\'alarme)', [
+    '-DOLIPRANE : 1cp 3/j pdt 10j',
+    '-CELEBREX 200mg : 1cp 2/j pdt 10j',
+    '-KALEST 20mg : 1cp le matin à jeun 7j'
+  ]),
+  normalize('Maladie de Horton', [
+    '-Cortancyl: 0.7-1mg/kg/j',
+    '-Anti-agrégant plaquettaire jusqu\'à normalisation du fibrinogène'
+  ]),
+  normalize('Névralgie cervico-brachiale', [
+    '-COLTRAMYL : 2CP 2/J PDT 7J (Myorelaxants)',
+    '-PROFENID 100mg (AINS) : 1cp 2/j',
+    '-KALEST 20mg (Oméprazole) : 1cp/j matin pdt 10j'
+  ]),
+  normalize('Tendinopathies', [
+    '-Repos 45j',
+    '-Attelle d\'immobilisation',
+    '-Doliprane: 3g 4/j',
+    '-AINS topique: Ketum 2.5% 3 app/j',
+    '-Rééducation',
+    '-Infiltrations cortisoniques'
+  ]),
+  normalize('Algodystrophie', [
+    { type: 'header', content: 'Phase chaude' },
+    '-Doliprane: 1g 4/j',
+    '-Cibacalcine 0.5mg en inj s/c au coucher pdt 10j',
+    '-Primperan 10mg: 20mn av inj de cibacalcine',
+    '-Atarax 25mg :20min av inj de cibacalcine',
+    '-Si efficacité poursuivre 2-3 injection pdt 3 semaines',
+    { type: 'header', content: 'Phase froide (12-18 mois)' },
+    '-Doliprane: 1g 4/j',
+    '-Mobilisation douce avec massage antalgique: 1-5 séances par semaine'
+  ]),
+  normalize('Arthrite septique', [
+    '-Bilan infectieux, démarrer le ttt sans attendre les résultats',
+    '-AUGMENTIN en IV 1g/8h relais par voie orale après apyrexie (6 semaines)',
+    '-GENTAMYCINE 160mg 1inj IM/j pst 3j',
+    '-Drainage chirurgical',
+    '-Mise en décharge de l\'articulation + lovenox 0.4cc/j',
+    '-PERFALGAN 1g/8h'
+  ]),
+  normalize('Torticolis', [
+    '-MYOXOL : 2cp 2/j pdt 7j',
+    '-PROFENID 100mg (AINS) : 1cp 2/j',
+    '-PROTON 20mg (Oméprazole) : 1cp/j matin pdt 10j'
   ])
 ];
 
@@ -1660,6 +1994,32 @@ const urologiePrescriptions = [
     { name: 'VIAGRA (25/50/100mg)', dosage: 'Commencer par 50mg, 1H avant rapport' },
     { name: 'ou LEVITRA (5/10/20mg)', dosage: '1cp, 1H avant rapport' },
     { name: 'ou CIALIS (10/20mg)', dosage: '1cp, 2H avant rapport' }
+  ]),
+  normalize('Prostatite bactérienne aiguë simple', [
+    { type: 'header', content: 'Prise en charge ambulatoire' },
+    '-Faire un ECBU sans en attendre les résultats',
+    '-CIPROXINE 500 mg : 1cp 2/j pendant 2 à 4 semaines'
+  ]),
+  normalize('Balanite', [
+    { type: 'header', content: 'MHD' },
+    '-Hygiène intime, éviter des sous vêtements trop serrés, bien sécher après douche',
+    { type: 'header', content: 'Traitement' },
+    '-PEVARYL crème: 1app X2/j jusqu\'à disparition complète des lésions'
+  ]),
+  normalize('Infection Urinaire (Protocoles récents)', [
+    { type: 'header', content: 'Cystite simple' },
+    'En 1ère intention : MONURIL ADULTE (Fosfomycine) 1 sachet en dose unique',
+    'En 2ème intention : SELEXID 200mg (Pivmécillinam) 1cp 2/j pdt 5j',
+    'En 3ème intention : MEGAFLOX 500mg (Ciprofloxacine) 1cp 2/j pdt 3j',
+    { type: 'header', content: 'Cystite à risque de complication' },
+    { type: 'note', content: 'Différer l\'antibiothérapie si possible pour adapter à l\'antibiogramme' },
+    'En 1ère intention : FURAZIDE 50mg (Nitrofurantoïne) 2cp 3/j pdt 5j',
+    'En 2ème intention : MEGAFLOX 500mg (Ciprofloxacine) 1cp 2/j pdt 7j',
+    { type: 'header', content: 'Pyélonéphrite sans signe de gravité' },
+    { type: 'note', content: 'Différer l\'antibiothérapie si possible pour adapter à l\'antibiogramme' },
+    '-OFLOCET 200mg (Ofloxacine) : 1cp 2/j pdt 10j',
+    '-DOLIPRANE 1g (Paracétamol) : 1cp 3/j',
+    '-Hospitalisation si critères de gravité'
   ])
 ];
 
@@ -1716,31 +2076,122 @@ const traumatoPrescriptions = [
 // 22. CERTIFICATS
 const certificatsPrescriptions = [
   normalize('Certificat d\'Arrêt de Travail', [
-    "Je soussigné, Docteur en médecine, certifie avoir examiné ce jour M/Mme [NOM] [PRENOM].",
+    "Je soussigné, Docteur en médecine, certifie avoir examiné ce jour M/Mme [NOM] [PRENOM], né(e) le [DATE NAISSANCE].",
     "Je déclare que son état de santé nécessite un arrêt de travail de [NB] jours.",
     "À compter du [DATE DEBUT] avec reprise le [DATE FIN] sauf complications.",
-    "Certificat établi à la demande de l’intéressé et remis en main propre pour servir et faire valoir ce que de droit."
+    "Certificat établi à la demande de l’intéressé et remis en main propre pour servir et faire valoir ce que de droit.",
+    "Fait à [LIEU], le [DATE DU JOUR]."
+  ]),
+  normalize('Certificat de Reprise du Travail', [
+    "Je soussigné, Docteur en médecine, certifie que l'état de santé de M/Mme [NOM] [PRENOM] demeurant [ADRESSE] lui permet de reprendre son travail à la date du [DATE DE REPRISE].",
+    "Fait à [LIEU], le [DATE DU JOUR]."
   ]),
   normalize('Certificat de Présomption de Grossesse', [
-    "Je soussigné, Docteur en médecine, certifie que Madame [NOM] présente des signes de présomption de grossesse.",
+    "Je soussigné, Docteur en médecine, certifie que Madame [NOM] [PRENOM] demeurant [ADRESSE] présente des signes de présomption de grossesse.",
     "La date présumée du début de celle-ci se situe aux environs du [DATE].",
-    "Remise en main propre, à la demande de l’intéressée, pour lui valoir ce que de droit."
+    "Remise en main propre, à la demande de l’intéressée, pour lui valoir ce que de droit.",
+    "Fait à [LIEU], le [DATE DU JOUR]."
+  ]),
+  normalize('Certificat de Grossesse (Évolutive)', [
+    "Je soussigné, Docteur en médecine, déclare, après avoir examiné Madame [NOM] [PRENOM] demeurant [ADRESSE].",
+    "Que celle-ci présente les signes d'une grossesse évolutive dont le terme est prévu le [DATE TERME].",
+    "Ce certificat est établi à la demande de l'intéressée et remis en main propre.",
+    "Fait à [LIEU], le [DATE DU JOUR]."
   ]),
   normalize('Certificat de Naissance', [
-    "Le [DATE] à [LIEU] à [HEURE] est né(e), rue [ADRESSE] du sexe [SEXE] prénommé(e) [PRENOM] fils (ou filles) de [PERE] et de [MERE]."
-  ]),
-  normalize('Aptitude Sportive (Compétition)', [
-    "Je soussigné, Docteur en médecine, certifie avoir examiné ce jour M/Mme [NOM].",
-    "Il (ou elle) ne présente pas de contre-indication à la pratique d’activités sportives en compétition."
-  ]),
-  normalize('Constat de Coups et Blessures (Initial)', [
-    "Je soussigné, Docteur en médecine, certifie avoir examiné le [DATE] M/Mme [NOM] qui déclare avoir été victime d'agression.",
-    "Il (ou elle) présente : [DESCRIPTION PRECISE DES LESIONS].",
-    "Ces blessures entraine une incapacité totale personnelle (ITT) de X jours, sauf complications."
+    "Le [DATE] à [LIEU] à [HEURE] est né(e), rue [ADRESSE], n°[NUMERO], du sexe [SEXE], prénommé(e) [PRENOM].",
+    "Fils (ou fille) de [PERE] né à [LIEU] le [DATE] (profession) et de [MERE] née à [LIEU] le [DATE] (profession), son épouse, domiciliés à [ADRESSE].",
+    "(Si père décédé : ajouter le lieu et la date du décès à la place de la profession)."
   ]),
   normalize('Certificat de Bonne Santé', [
-    "Je soussigné, Docteur en médecine, certifie après avoir examiné ce jour M/Mme [NOM].",
-    "Celui-ci ne présente aucun signe d’affection cliniquement décelable ; il semble, ce jour, en bonne santé."
+    "Je soussigné, Docteur en médecine, certifie après avoir examiné ce jour M/Mme [NOM] [PRENOM].",
+    "Celui-ci ne présente aucun signe d'affection cliniquement décelable ; il semble, ce jour, en bonne santé.",
+    "Fait à [LIEU], le [DATE DU JOUR]."
+  ]),
+  normalize('Retour en Classe (Après maladie contagieuse)', [
+    "Je soussigné, Docteur en médecine, certifie que M/Mme [NOM] [PRENOM] né(e) le [DATE NAISSANCE] a présenté du [DATE DEBUT] au [DATE FIN] une [NOM MALADIE].",
+    "Son état de santé actuel ne me paraît pas présenter de danger pour lui-même, ni, pour les personnes qui l'approcheraient, de risques de contagion.",
+    "Fait à [LIEU], le [DATE DU JOUR]."
+  ]),
+  normalize('Admission Scolaire', [
+    "Je soussigné, Docteur en médecine, certifie avoir examiné le [DATE], l'enfant [NOM] [PRENOM] né(e) le [DATE NAISSANCE].",
+    "Qui ne paraît atteint(e) d'aucun signe de maladies transmissibles, ni d'aucune affection susceptible de contre-indiquer son admission à [NOM ETABLISSEMENT].",
+    "Fait à [LIEU], le [DATE DU JOUR]."
+  ]),
+  normalize('Non-Contagion (Colonie de vacances)', [
+    "Je soussigné, Docteur en médecine, certifie après avoir examiné ce jour l'enfant [NOM] [PRENOM] né(e) le [DATE].",
+    "N'avoir constaté aucun signe de maladie transmissible actuellement décelable ni d'affection cutanée pouvant présenter un danger de contamination.",
+    "L'enfant ne paraît pas porteur d'une parasitose.",
+    "Fait à [LIEU], le [DATE DU JOUR]."
+  ]),
+  normalize('Exemption de Sport (Scolaire)', [
+    "Je soussigné, Docteur en médecine, certifie après avoir examiné l'enfant [NOM] [PRENOM] né le [DATE], demeurant [ADRESSE].",
+    "Que son état de santé ne lui permet pas de faire de la gymnastique (ou natation/sport) pendant [DUREE] (jours/semaines/mois).",
+    "Fait à [LIEU], le [DATE DU JOUR]."
+  ]),
+  normalize('Aptitude Sportive (Compétition)', [
+    "Je soussigné, Docteur en médecine, certifie avoir examiné le [DATE], M/Mme [NOM] [PRENOM] né(e) le [DATE NAISSANCE].",
+    "Il (ou elle) ne présente pas de contre-indication à la pratique d’activités sportives en compétition.",
+    "Fait à [LIEU], le [DATE DU JOUR]."
+  ]),
+  normalize('Aptitude à un Emploi', [
+    "Je soussigné, Docteur en médecine, certifie après avoir examiné le [DATE], M/Mme [NOM] [PRENOM].",
+    "Qu'il (ou elle) ne présente aucun signe actuellement décelable de maladie en évolution, et semble posséder les aptitudes physiques compatibles avec un emploi de [EMPLOI].",
+    "Remis à l'intéressé pour être transmis à son futur employeur.",
+    "Fait à [LIEU], le [DATE DU JOUR]."
+  ]),
+  normalize('Certificat de Vaccination', [
+    "Je soussigné, Docteur en médecine, certifie avoir pratiqué la vaccination (ou la revaccination) [NOM VACCIN] sur la personne de M/Mme [NOM] [PRENOM].",
+    "Lot N° : [NUMERO LOT]",
+    "Fait à [LIEU], le [DATE DU JOUR]."
+  ]),
+  normalize('Certificat d\'Hospitalisation', [
+    "Je soussigné, Docteur en médecine, certifie que l'état de santé de M/Mme [NOM] [PRENOM] demeurant [ADRESSE].",
+    "Nécessite son hospitalisation (d'urgence) dans un service de [SERVICE], de l'hôpital de [HOPITAL].",
+    "Fait à [LIEU], le [DATE DU JOUR]."
+  ]),
+  normalize('Constat de Coups et Blessures (Initial)', [
+    "Je soussigné, Docteur en médecine, certifie avoir examiné le [DATE EXAMEN] à [HEURE], M/Mme [NOM] [PRENOM] (2), né(e) le [DATE NAISSANCE].",
+    "Qui déclare avoir été victime de [ACCIDENT/AGRESSION] (3), le [DATE FAITS] à [HEURE] à [LIEU].",
+    "Il (ou elle) présente :",
+    "[DESCRIPTION PRECISE DES LESIONS : Localisation, dimensions, couleurs, profondeurs] (4).",
+    "Ces blessures entraînent une Incapacité Totale de Travail (ITT) de [X] jours (ou n'entraînent pas d'ITT), sauf complications.",
+    "Certificat établi à la demande de l'intéressé(e) et remis en main propre.",
+    "Fait à [LIEU], le [DATE DU JOUR]."
+  ], { notes: ["(2) Nom de jeune fille si mariée", "(4) Distinguer les dires du patient (entre guillemets) des constatations médicales."] }),
+  normalize('Consolidation (Sans séquelles)', [
+    "Je soussigné, Docteur en médecine, certifie que l'état de santé de M/Mme [NOM] [PRENOM].",
+    "Victime d'un(e) [CAUSE] le [DATE ACCIDENT], peut être considéré comme consolidé à la date du [DATE CONSOLIDATION] (éventuellement avec soins d'entretien).",
+    "Fait à [LIEU], le [DATE DU JOUR]."
+  ]),
+  normalize('Consolidation (Avec séquelles)', [
+    "Je soussigné, Docteur en médecine, certifie avoir examiné le [DATE] M/Mme [NOM] [PRENOM], victime de [CAUSE] le [DATE ACCIDENT].",
+    "A la suite de cet accident, il/elle a présenté : [DESCRIPTION LESIONS INITIALES].",
+    "Evolution : [RESUME, REPRISE TRAVAIL].",
+    "Doléances actuelles : [PLAINTES].",
+    "Examen des séquelles : [DESCRIPTION MINUTIEUSE, CICATRICES, LIMITATIONS].",
+    "CONCLUSIONS :",
+    "- Date de consolidation : [DATE]",
+    "- Taux d'Incapacité Permanente Partielle (IPP) : [TAUX] %",
+    "- Souffrances endurées (Quantum Doloris) : [X]/7",
+    "- Préjudice esthétique : [X]/7",
+    "Fait à [LIEU], le [DATE DU JOUR]."
+  ]),
+  normalize('Constat de Violences Sexuelles', [
+    "Je soussigné, Docteur en médecine, certifie avoir examiné le [DATE] à [HEURE] à [LIEU], une personne déclarant se nommer [NOM].",
+    "Elle (ou il) déclare avoir subi des violences sexuelles le [DATE] à [LIEU].",
+    "État général/Comportement : [DESCRIPTION EMOTIVITE, ETAT VETEMENTS...]",
+    "Examen clinique général : [DESCRIPTION]",
+    "Examen génital/anal : [DESCRIPTION HYMEN, POURTOUR ANAL, LESIONS...]",
+    "Un prélèvement vaginal a été effectué.",
+    "Prescription d'examens biologiques (Grossesse, MST).",
+    "Ces lésions entraînent une ITT de [X] jours.",
+    "Fait à [LIEU], le [DATE DU JOUR]."
+  ]),
+  normalize('Certificat d\'Embaumement', [
+    "Je soussigné, Docteur en médecine, déclare que la mort de M/Mme [NOM] survenue le [DATE DECES] à [LIEU] était due à une cause naturelle.",
+    "Délivré à la demande de la famille pour permettre l'embaumement du corps.",
+    "Fait à [LIEU], le [DATE DU JOUR]."
   ])
 ];
 
