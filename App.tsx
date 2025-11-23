@@ -226,7 +226,6 @@ function App() {
                        <div className="mb-8 flex flex-col items-center w-full">
                           <span className="text-blue-200 text-xs font-bold uppercase tracking-widest mb-3">Réalisé par</span>
                           <div className="flex items-center gap-4 bg-white/10 backdrop-blur-sm px-6 py-4 rounded-2xl border border-white/10 shadow-lg transform hover:scale-105 transition-transform duration-300 max-w-full">
-                             <div className="w-12 h-12 shrink-0 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-serif font-bold shadow-lg border-2 border-slate-700 text-2xl">Z</div>
                              <span className="text-lg md:text-3xl font-bold tracking-tight truncate">Dr ZEOUITINI YOUSSEF</span>
                           </div>
                        </div>
@@ -240,18 +239,15 @@ function App() {
                           </div>
                           
                           <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-6 flex-wrap">
-                            <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors w-full md:w-auto">
-                               <div className="w-8 h-8 shrink-0 rounded-full bg-indigo-500 flex items-center justify-center text-white font-serif font-bold shadow-lg border border-slate-600">E</div>
+                            <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors w-full md:w-auto justify-center">
                                <span className="text-sm md:text-base font-medium text-slate-200">Dr EL-AZRAK MOHAMED</span>
                             </div>
                             <div className="hidden md:block w-1 h-1 rounded-full bg-slate-600"></div>
-                            <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors w-full md:w-auto">
-                               <div className="w-8 h-8 shrink-0 rounded-full bg-purple-500 flex items-center justify-center text-white font-serif font-bold shadow-lg border border-slate-600">N</div>
+                            <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors w-full md:w-auto justify-center">
                                <span className="text-sm md:text-base font-medium text-slate-200">Dr NOUMAIRI MOHAMMED</span>
                             </div>
                             <div className="hidden md:block w-1 h-1 rounded-full bg-slate-600"></div>
-                            <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors w-full md:w-auto">
-                               <div className="w-8 h-8 shrink-0 rounded-full bg-emerald-500 flex items-center justify-center text-white font-serif font-bold shadow-lg border border-slate-600">B</div>
+                            <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors w-full md:w-auto justify-center">
                                <span className="text-sm md:text-base font-medium text-slate-200">Dr BOUBGA TAOUFIK</span>
                             </div>
                           </div>
