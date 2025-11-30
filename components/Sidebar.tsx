@@ -3,7 +3,7 @@ import { specialties } from '../data';
 import { 
   Activity, Heart, Stethoscope, TestTube, Baby, Bug, Wind, Bone, Ear, 
   Brain, Eye, Hammer, FileText, ChevronRight, Droplet, Users, Siren,
-  SortAsc, X, LayoutGrid
+  SortAsc, X, LayoutGrid, ShieldCheck
 } from 'lucide-react';
 
 const iconMap: Record<string, any> = {
@@ -13,10 +13,11 @@ const iconMap: Record<string, any> = {
 
 interface SidebarProps {
   selectedSpecialtyId: string | null;
-  viewMode: 'dashboard' | 'specialty' | 'alphabetical';
+  viewMode: 'dashboard' | 'specialty' | 'alphabetical' | 'privacy';
   onSelectSpecialty: (id: string) => void;
   onSelectAlphabetical: () => void;
   onSelectDashboard: () => void;
+  onSelectPrivacy: () => void;
   onClose?: () => void;
 }
 
@@ -26,6 +27,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onSelectSpecialty,
   onSelectAlphabetical,
   onSelectDashboard,
+  onSelectPrivacy,
   onClose
 }) => {
   return (
@@ -147,7 +149,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </nav>
 
       {/* Footer */}
-      <div className="p-4 z-10 border-t border-slate-800">
+      <div className="p-4 z-10 border-t border-slate-800 space-y-2">
+        <button 
+          onClick={onSelectPrivacy}
+          className="w-full flex items-center justify-center gap-2 text-[11px] text-slate-500 hover:text-slate-300 transition-colors py-2"
+        >
+          <ShieldCheck className="w-3 h-3" />
+          Politique de confidentialité
+        </button>
         <div className="bg-slate-800/50 rounded-lg p-3 text-center">
           <p className="text-[10px] text-slate-500 font-mono">Base de données sécurisée</p>
         </div>

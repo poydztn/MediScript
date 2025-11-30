@@ -5,7 +5,7 @@ import { specialties } from './data';
 import { 
   Search, Menu, X, ArrowLeft, FileText, ChevronRight, 
   Activity, Heart, Stethoscope, TestTube, Baby, Bug, Wind, Bone, Ear, 
-  Brain, Eye, Hammer, Droplet, Users, Siren, AlertTriangle, Info, LayoutGrid
+  Brain, Eye, Hammer, Droplet, Users, Siren, AlertTriangle, Info, LayoutGrid, BookOpen, ShieldCheck
 } from 'lucide-react';
 import { Prescription } from './types';
 
@@ -27,7 +27,7 @@ interface GroupedItem {
 }
 
 function App() {
-  const [viewMode, setViewMode] = useState<'dashboard' | 'specialty' | 'alphabetical'>('dashboard');
+  const [viewMode, setViewMode] = useState<'dashboard' | 'specialty' | 'alphabetical' | 'privacy'>('dashboard');
   const [selectedSpecialtyId, setSelectedSpecialtyId] = useState<string | null>(null);
   const [selectedPrescription, setSelectedPrescription] = useState<Prescription | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -55,6 +55,15 @@ function App() {
 
   const handleSelectAlphabetical = () => {
     setViewMode('alphabetical');
+    setSelectedSpecialtyId(null);
+    setSelectedPrescription(null);
+    setSearchTerm('');
+    setMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleSelectPrivacy = () => {
+    setViewMode('privacy');
     setSelectedSpecialtyId(null);
     setSelectedPrescription(null);
     setSearchTerm('');
@@ -132,6 +141,7 @@ function App() {
   const currentViewTitle = useMemo(() => {
     if (searchTerm) return `Résultats de recherche pour "${searchTerm}"`;
     if (viewMode === 'alphabetical') return "Index Alphabétique Global";
+    if (viewMode === 'privacy') return "Politique de Confidentialité";
     return currentSpecialty?.name || "Spécialité";
   }, [viewMode, currentSpecialty, searchTerm]);
 
@@ -139,6 +149,7 @@ function App() {
   // --- RENDER ---
 
   const isDashboard = viewMode === 'dashboard' && !searchTerm && !selectedPrescription;
+  const isPrivacy = viewMode === 'privacy' && !searchTerm && !selectedPrescription;
 
   return (
     <div className="flex h-screen bg-medical-background font-sans overflow-hidden w-full">
@@ -156,6 +167,7 @@ function App() {
           onSelectSpecialty={handleSelectSpecialty} 
           onSelectAlphabetical={handleSelectAlphabetical}
           onSelectDashboard={handleSelectDashboard}
+          onSelectPrivacy={handleSelectPrivacy}
           onClose={() => setMobileMenuOpen(false)}
         />
       </div>
@@ -172,15 +184,15 @@ function App() {
             <Menu />
           </button>
 
-          {selectedPrescription ? (
+          {selectedPrescription || isPrivacy ? (
              <button 
-               onClick={handleBackToList}
+               onClick={isPrivacy ? handleSelectDashboard : handleBackToList}
                className="group flex items-center gap-2 text-slate-500 hover:text-blue-600 font-medium transition-colors px-3 py-2 rounded-lg hover:bg-blue-50"
              >
                <div className="bg-white border border-slate-200 rounded-full p-1 group-hover:border-blue-200 shadow-sm">
                  <ArrowLeft className="w-4 h-4" />
                </div>
-               <span className="hidden xs:inline">Retour à la liste</span>
+               <span className="hidden xs:inline">Retour {isPrivacy ? "à l'accueil" : "à la liste"}</span>
                <span className="xs:hidden">Retour</span>
              </button>
           ) : (
@@ -197,6 +209,9 @@ function App() {
                   setSearchTerm(e.target.value);
                   if (e.target.value && selectedPrescription) {
                     setSelectedPrescription(null);
+                  }
+                  if (e.target.value && viewMode === 'privacy') {
+                    setViewMode('dashboard');
                   }
                 }}
               />
@@ -222,6 +237,15 @@ function App() {
                      
                      <div className="relative z-10 flex flex-col items-center text-center">
                        
+                       {/* App Title & Count */}
+                       <div className="mb-8 text-center">
+                          <h1 className="text-3xl md:text-5xl font-serif font-bold text-white mb-3 tracking-tight">Bibliothèque d'Ordonnances</h1>
+                          <div className="inline-flex items-center gap-2 bg-blue-500/20 border border-blue-400/30 px-4 py-1.5 rounded-full">
+                            <BookOpen className="w-4 h-4 text-blue-300" />
+                            <span className="text-blue-100 font-medium text-sm md:text-base">+360 Protocoles Médicaux</span>
+                          </div>
+                       </div>
+
                        {/* Réalisé par */}
                        <div className="mb-8 flex flex-col items-center w-full">
                           <span className="text-blue-200 text-xs font-bold uppercase tracking-widest mb-3">Réalisé par</span>
@@ -245,10 +269,6 @@ function App() {
                             <div className="hidden md:block w-1 h-1 rounded-full bg-slate-600"></div>
                             <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors w-full md:w-auto justify-center">
                                <span className="text-sm md:text-base font-medium text-slate-200">Dr NOUMAIRI MOHAMMED</span>
-                            </div>
-                            <div className="hidden md:block w-1 h-1 rounded-full bg-slate-600"></div>
-                            <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors w-full md:w-auto justify-center">
-                               <span className="text-sm md:text-base font-medium text-slate-200">Dr BOUBGA TAOUFIK</span>
                             </div>
                           </div>
                        </div>
@@ -305,6 +325,88 @@ function App() {
                     })}
                   </div>
                </div>
+            ) : isPrivacy ? (
+              /* VIEW: PRIVACY POLICY */
+              <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-4xl mx-auto w-full pb-10">
+                <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 md:p-12">
+                  <div className="flex items-center gap-3 mb-6">
+                    <ShieldCheck className="w-8 h-8 text-blue-600" />
+                    <h1 className="text-3xl font-serif font-bold text-slate-800">Politique de Confidentialité</h1>
+                  </div>
+                  <p className="text-slate-500 mb-8 border-b border-slate-100 pb-4">Dernière mise à jour : 30/11/2025</p>
+                  
+                  <div className="space-y-8 text-slate-700 leading-relaxed">
+                    <section>
+                      <h2 className="text-xl font-bold text-slate-900 mb-3">1. Introduction</h2>
+                      <p>Bienvenue dans Ordo Facile. Cette politique de confidentialité explique comment l’application collecte, utilise, stocke et protège les données des utilisateurs. Nous nous engageons à respecter la confidentialité et la sécurité des informations.</p>
+                    </section>
+
+                    <section>
+                      <h2 className="text-xl font-bold text-slate-900 mb-3">2. Données collectées</h2>
+                      
+                      <h3 className="font-bold text-slate-800 mt-4 mb-2">2.1. Données personnelles</h3>
+                      <p>L’application ne collecte pas de données personnelles identifiables, sauf si l’utilisateur les fournit volontairement (ex : contact support). Nous ne demandons ni : nom, email, numéro de téléphone, adresse, ni données médicales personnelles du patient.</p>
+                      
+                      <h3 className="font-bold text-slate-800 mt-4 mb-2">2.2. Données liées à l’utilisation</h3>
+                      <p>Pour améliorer l’application, nous pouvons collecter : données d’usage (nombre d’ordonnances consultées, spécialités utilisées…) et informations techniques (version de l’app, langue, appareil, crash logs). Ces données sont anonymes et ne permettent pas d’identifier un utilisateur.</p>
+                      
+                      <h3 className="font-bold text-slate-800 mt-4 mb-2">2.3. Données médicales</h3>
+                      <p>Ordo Facile propose uniquement des modèles d’ordonnances types génériques. Aucune donnée médicale concernant des patients n’est collectée, stockée ou transmise.</p>
+                    </section>
+
+                    <section>
+                      <h2 className="text-xl font-bold text-slate-900 mb-3">3. Utilisation des données</h2>
+                      <p>Les données anonymisées peuvent être utilisées pour : améliorer les fonctionnalités, corriger les bugs, optimiser l’expérience utilisateur et analyser l’usage général (statistiques). Aucune donnée personnelle n’est vendue ou partagée à des tiers.</p>
+                    </section>
+
+                    <section>
+                      <h2 className="text-xl font-bold text-slate-900 mb-3">4. Partage de données avec des tiers</h2>
+                      <p>Nous ne partageons pas vos données personnelles avec des tiers, sauf : prestataires techniques (ex : Google Play Services) et outils d’analyse anonymisés (ex : Firebase Analytics, Crashlytics). Ces services respectent les normes internationales de confidentialité.</p>
+                    </section>
+
+                    <section>
+                      <h2 className="text-xl font-bold text-slate-900 mb-3">5. Publicités et monétisation</h2>
+                      <p>Si l’application utilise des publicités (ex : Google AdMob) : certaines données non personnelles peuvent être collectées automatiquement (ID publicitaire, interactions anonymes). Vous pouvez désactiver la personnalisation des annonces dans les paramètres de votre appareil. Nous ne transmettons aucune donnée médicale aux régies publicitaires.</p>
+                    </section>
+
+                    <section>
+                      <h2 className="text-xl font-bold text-slate-900 mb-3">6. Stockage et sécurité</h2>
+                      <p>Nous mettons en place des mesures de sécurité pour protéger les données, notamment : chiffrement local, accès limité aux données internes, absence de transfert de données médicales sensibles. Nous ne stockons pas d’informations personnelles sur nos serveurs.</p>
+                    </section>
+
+                    <section>
+                      <h2 className="text-xl font-bold text-slate-900 mb-3">7. Droits des utilisateurs</h2>
+                      <p>Vous pouvez : demander la suppression de toutes les données vous concernant, demander une copie des données collectées, limiter les permissions de l’application dans les réglages de votre appareil.</p>
+                      <p className="mt-2 text-blue-600 font-medium">Contact : poyd.zeouitini@gmail.com</p>
+                    </section>
+
+                    <section>
+                      <h2 className="text-xl font-bold text-slate-900 mb-3">8. Permissions nécessaires</h2>
+                      <ul className="list-disc pl-5 space-y-2">
+                        <li><strong>Stockage / Média :</strong> pour sauvegarder les ordonnances favorites</li>
+                        <li><strong>Internet :</strong> pour afficher les données et communiquer avec les serveurs IA</li>
+                      </ul>
+                      <p className="mt-2">Aucune permission n’est utilisée pour collecter des données personnelles.</p>
+                    </section>
+
+                    <section>
+                      <h2 className="text-xl font-bold text-slate-900 mb-3">9. Liens externes</h2>
+                      <p>L’application peut contenir des liens vers des ressources médicales ou externes. Nous ne sommes pas responsables du contenu de ces sites.</p>
+                    </section>
+
+                    <section>
+                      <h2 className="text-xl font-bold text-slate-900 mb-3">10. Modifications de cette politique</h2>
+                      <p>Nous pouvons mettre à jour cette politique. La date de la dernière modification sera affichée en haut du document.</p>
+                    </section>
+
+                    <section>
+                      <h2 className="text-xl font-bold text-slate-900 mb-3">11. Contact</h2>
+                      <p>Pour toute question concernant la confidentialité ou la protection des données :</p>
+                      <p className="mt-2 font-medium">📧 Email : poyd.zeouitini@gmail.com</p>
+                    </section>
+                  </div>
+                </div>
+              </div>
             ) : (
               /* VIEW: LIST OR DETAIL */
               <>

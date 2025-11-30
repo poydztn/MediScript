@@ -113,7 +113,7 @@ export const PrescriptionCard: React.FC<PrescriptionCardProps> = ({ prescription
           </div>
           <div className="text-center">
             <div className="h-16 md:h-20 w-40 md:w-56 border-b border-gray-800 mb-2 flex items-end justify-center relative">
-               <span className="font-hand text-xl md:text-3xl text-blue-900 opacity-60 absolute -rotate-12 top-6 md:top-4 whitespace-nowrap left-1/2 -translate-x-1/2">Dr. Zeouitini Youssef</span>
+               {/* Signature removed as requested */}
             </div>
             <span className="text-[8px] md:text-[10px] text-gray-500 uppercase tracking-widest">Signature & Cachet</span>
           </div>
